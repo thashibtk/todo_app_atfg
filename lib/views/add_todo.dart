@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todo/adapters/todo_adapter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddTodo extends StatefulWidget {
   final formkey = GlobalKey<FormState>();
@@ -35,12 +36,12 @@ class _AddTodoState extends State<AddTodo> {
       backgroundColor: Colors.white70,
       appBar: AppBar(
         toolbarHeight: 70,
-        backgroundColor: Colors.blue.shade50,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
-          "Add new task",
-          style: TextStyle(
-            color: Colors.blue,
+          "Add Your Tasks",
+          style: GoogleFonts.dancingScript(
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 26,
           ),
