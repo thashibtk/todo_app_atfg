@@ -109,7 +109,16 @@ class _AddTodoState extends State<AddTodo> {
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
-            )
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Colors.blue),
+              onPressed: submitData,
+              child: Text(
+                'Add to google calender',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         ),
       ),

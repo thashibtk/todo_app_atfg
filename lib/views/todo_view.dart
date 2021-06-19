@@ -23,18 +23,24 @@ class TodoView extends StatelessWidget {
         },
       ),
       appBar: AppBar(
-        toolbarHeight: 70,
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        title: Text(
-          "Task Manager",
-          style: GoogleFonts.dancingScript(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 26,
+          toolbarHeight: 70,
+          backgroundColor: Colors.blue,
+          centerTitle: true,
+          title: Text(
+            "Task Manager",
+            style: GoogleFonts.dancingScript(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 26,
+            ),
           ),
-        ),
-      ),
+          actions: [
+            Container(
+              width: 50,
+              child: Image.network(
+                  'https://img.icons8.com/color/452/google-calendar--v1.png'),
+            )
+          ]),
       body: ValueListenableBuilder(
         valueListenable: Hive.box<Todo>('todos').listenable(),
         builder: (context, Box<Todo> box, _) {
