@@ -27,7 +27,7 @@ class TodoView extends StatelessWidget {
         title: Text(
           "Task Manager",
           style: TextStyle(
-            fontFamily: 'RobotoMono',
+            fontFamily: 'Pacifico',
             color: Colors.blue,
             fontWeight: FontWeight.bold,
             fontSize: 26,
@@ -56,9 +56,7 @@ class TodoView extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   subtitle: Text(
-                    DateFormat('dd MMM yyyy').format(todo.date) +
-                        "\n" +
-                        todo.description,
+                    todo.date.toString() + "\n" + todo.description,
                     style: TextStyle(fontSize: 16),
                   ),
                 );
