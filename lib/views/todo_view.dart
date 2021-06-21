@@ -31,7 +31,7 @@ class TodoView extends StatelessWidget {
           "ToDo App",
           style: GoogleFonts.dancingScript(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
             fontSize: 26,
           ),
         ),

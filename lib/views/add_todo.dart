@@ -111,7 +111,7 @@ class _AddTodoState extends State<AddTodo> {
                               DateFormat("h:mm a, dd MMM yyyy").format(_start),
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     ElevatedButton(
@@ -154,7 +154,7 @@ class _AddTodoState extends State<AddTodo> {
                           ? 'End : '
                           : 'End : \n' +
                               DateFormat("h:mm a, dd MMM yyyy").format(_end),
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: TextStyle(fontSize: 16, color: Colors.black),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
