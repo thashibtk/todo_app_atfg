@@ -1,9 +1,17 @@
 import 'dart:ui';
-
-import 'package:flutter/material.dart';
+// import 'package:googleapis/sheets/v4.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import "package:googleapis_auth/auth_io.dart";
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+// import 'package:googleapis/calendar/v3.dart';
+
 import 'package:todo/adapters/todo_adapter.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import '../CalendarClient.dart';
+import '../widgets/PickDateButton.dart';
 
 class AddTodo extends StatefulWidget {
   final formkey = GlobalKey<FormState>();
@@ -12,7 +20,11 @@ class AddTodo extends StatefulWidget {
 }
 
 class _AddTodoState extends State<AddTodo> {
-  String title, description;
+  CalendarClient calendarClient = CalendarClient();
+  DateTime _start = DateTime.now();
+  DateTime _end = DateTime.now().add(Duration(hours: 1));
+  String title = 'No title';
+  String description = 'No description';
 
   submitData() async {
     if (widget.formkey.currentState.validate()) {
@@ -21,105 +33,199 @@ class _AddTodoState extends State<AddTodo> {
         Todo(
           title: title,
           description: description,
-          date: _dateTime,
+          start: _start,
+          end: _end,
         ),
       );
       Navigator.of(context).pop();
+      calendarClient.insert(
+        title,
+        _start,
+        _end,
+      );
     }
   }
-
-  DateTime _dateTime;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white70,
-      appBar: AppBar(
-        toolbarHeight: 70,
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        title: Text(
-          "Add Your Tasks",
-          style: GoogleFonts.dancingScript(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 26,
+      backgroundColor: Colors.black,
+      appBar: customAppBar(context),
+      body: Container(
+        child: Form(
+          key: widget.formkey,
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: '   Title',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal, width: 3),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    title = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: '   Description',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal, width: 1),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal, width: 3),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    description = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(width: 1, color: Colors.teal),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(width: 5),
+                    Text(
+                      _start == null
+                          ? 'Start : '
+                          : 'Start : \n' +
+                              DateFormat("h:mm a, dd MMM yyyy").format(_start),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal,
+                        shape: StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime.now(),
+                                maxTime:
+                                    DateTime.now().add(Duration(days: 364)),
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en)
+                            .then((value) {
+                          setState(() {
+                            _start = value;
+                          });
+                        });
+                      },
+                      child: PickDateButton(),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(width: 1, color: Colors.teal),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(width: 5),
+                    Text(
+                      _end == null
+                          ? 'End : '
+                          : 'End : \n' +
+                              DateFormat("h:mm a, dd MMM yyyy").format(_end),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal,
+                        shape: StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: _start.add(Duration(minutes: 1)),
+                                maxTime:
+                                    DateTime.now().add(Duration(days: 365)),
+                                currentTime: _start.add(Duration(hours: 1)),
+                                locale: LocaleType.en)
+                            .then((value) {
+                          setState(() {
+                            _end = value;
+                          });
+                        });
+                      },
+                      child: PickDateButton(),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.teal,
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.all(10),
+                ),
+                onPressed: submitData,
+                child: Text(
+                  'Add',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                ' Tip: You can long press on a task to delete it!',
+                style: TextStyle(color: Colors.white70),
+              ),
+            ],
           ),
         ),
       ),
-      body: Form(
-        key: widget.formkey,
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            TextFormField(
-              decoration: InputDecoration(hintText: 'Add title'),
-              onChanged: (value) {
-                setState(() {
-                  title = value;
-                });
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(hintText: 'Add description'),
-              onChanged: (value) {
-                setState(() {
-                  description = value;
-                });
-              },
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _dateTime == null ? 'Pick a date' : _dateTime.toString(),
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.blue),
-                    onPressed: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2030),
-                      ).then((value) {
-                        setState(() {
-                          _dateTime = value;
-                        });
-                      });
-                    },
-                    child: Icon(
-                      Icons.date_range_outlined,
-                      color: Colors.white,
-                    )),
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.blue),
-              onPressed: submitData,
-              child: Text(
-                'Add',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.blue),
-              onPressed: submitData,
-              child: Text(
-                'Add to google calender',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+    );
+  }
+
+  AppBar customAppBar(BuildContext context) {
+    return AppBar(
+      toolbarHeight: 70,
+      backgroundColor: Colors.black,
+      centerTitle: true,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_rounded),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      title: Text(
+        "Add task",
+        style: TextStyle(
+          color: Colors.teal,
+          fontWeight: FontWeight.bold,
+          fontSize: 26,
         ),
       ),
     );
