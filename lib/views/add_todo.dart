@@ -49,7 +49,7 @@ class _AddTodoState extends State<AddTodo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.green,
       appBar: customAppBar(context),
       body: Container(
         child: Form(
