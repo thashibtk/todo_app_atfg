@@ -1,12 +1,11 @@
 import 'dart:ui';
-// import 'package:googleapis/sheets/v4.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import "package:googleapis_auth/auth_io.dart";
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:googleapis/calendar/v3.dart';
 
 import 'package:todo/adapters/todo_adapter.dart';
 
@@ -49,7 +48,7 @@ class _AddTodoState extends State<AddTodo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.white70,
       appBar: customAppBar(context),
       body: Container(
         child: Form(
@@ -59,13 +58,13 @@ class _AddTodoState extends State<AddTodo> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  hintText: '   Title',
+                  hintText: '    Add Title',
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal),
+                    borderSide: BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal, width: 3),
+                    borderSide: BorderSide(color: Colors.black, width: 3),
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
@@ -80,7 +79,7 @@ class _AddTodoState extends State<AddTodo> {
                 decoration: InputDecoration(
                   hintText: '   Description',
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal, width: 1),
+                    borderSide: BorderSide(color: Colors.black, width: 1),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -99,7 +98,7 @@ class _AddTodoState extends State<AddTodo> {
                 padding: EdgeInsets.symmetric(horizontal: 6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  border: Border.all(width: 1, color: Colors.teal),
+                  border: Border.all(width: 1, color: Colors.black),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,7 +116,7 @@ class _AddTodoState extends State<AddTodo> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.teal,
+                        primary: Colors.blue,
                         shape: StadiumBorder(),
                       ),
                       onPressed: () {
@@ -144,7 +143,7 @@ class _AddTodoState extends State<AddTodo> {
                 padding: EdgeInsets.symmetric(horizontal: 6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  border: Border.all(width: 1, color: Colors.teal),
+                  border: Border.all(width: 1, color: Colors.black),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +158,7 @@ class _AddTodoState extends State<AddTodo> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.teal,
+                        primary: Colors.blue,
                         shape: StadiumBorder(),
                       ),
                       onPressed: () {
@@ -184,24 +183,20 @@ class _AddTodoState extends State<AddTodo> {
               const SizedBox(height: 10),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.teal,
+                  primary: Colors.green,
                   shape: StadiumBorder(),
                   padding: EdgeInsets.all(10),
                 ),
                 onPressed: submitData,
                 child: Text(
                   'Add',
-                  style: TextStyle(
-                    color: Colors.black,
+                  style: GoogleFonts.aladin(
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
-                ' Tip: You can long press on a task to delete it!',
-                style: TextStyle(color: Colors.white70),
-              ),
             ],
           ),
         ),
@@ -212,7 +207,7 @@ class _AddTodoState extends State<AddTodo> {
   AppBar customAppBar(BuildContext context) {
     return AppBar(
       toolbarHeight: 70,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blue,
       centerTitle: true,
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_new_rounded),
@@ -222,10 +217,10 @@ class _AddTodoState extends State<AddTodo> {
       ),
       title: Text(
         "Add task",
-        style: TextStyle(
-          color: Colors.teal,
-          fontWeight: FontWeight.bold,
-          fontSize: 26,
+        style: GoogleFonts.dancingScript(
+          color: Colors.white,
+          fontWeight: FontWeight.w900,
+          fontSize: 30,
         ),
       ),
     );

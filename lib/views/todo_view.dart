@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -9,10 +10,13 @@ class TodoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white70,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal,
-        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => AddTodo()),
@@ -21,12 +25,12 @@ class TodoView extends StatelessWidget {
       ),
       appBar: AppBar(
         toolbarHeight: 70,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
-          "ToDo",
-          style: TextStyle(
-            color: Colors.teal,
+          "ToDo App",
+          style: GoogleFonts.dancingScript(
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 26,
           ),
@@ -62,7 +66,6 @@ class ValueListenbleBuilder extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
               subtitle: Text(
-                // DateFormat('dd MMM yyyy').format(todo.date) +
                 "Start : " +
                     todo.start.toString() +
                     "\n" +
